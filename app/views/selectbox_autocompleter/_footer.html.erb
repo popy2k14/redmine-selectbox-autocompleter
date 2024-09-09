@@ -7,6 +7,9 @@
     // select autocomplete plugin init
     var isInit = false;
 
+    console.log( <%= raw generate_exclude_target_list_for_js %>)
+    console.log( <%= generate_autocompleter_min_count_show_search %>)
+
     function initSelectboxAutocompleter(mutationRecord) {
       <%= raw generate_target_list_for_js %>.forEach(function (target) {
         var $selectbox = $('#' + target);
