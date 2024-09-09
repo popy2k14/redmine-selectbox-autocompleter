@@ -5,14 +5,37 @@
 <script type="text/javascript">
   (function(){
     // select autocomplete plugin init
+    var isInit = false;
 
-    function initSelectboxAutocompleter() {
+    function initSelectboxAutocompleter(mutationRecord) {
       <%= raw generate_target_list_for_js %>.forEach(function (target) {
-         var $selectbox = $('#' + target);
-         if(!$selectbox.hasClass('select2-hidden-accessible') && $selectbox.is(':visible')) {
-           $selectbox.select2();
-         }
+        var $selectbox = $('#' + target);
+
+        if (!$selectbox.hasClass('select2-hidden-accessible') && $selectbox.is(':visible')) {
+          const isMultiple = !!$selectbox.attr('multiple');
+          $selectbox
+            .addClass('select-autocomplete')
+            .attr('data-multiple', isMultiple)
+            .select2({multiple: isMultiple, tags: isMultiple});
+        }
+
+        if (!isInit) return;
+
+        const multipleChangeTarget = mutationRecord.find((record) => record.type === 'attributes' && record.attributeName === 'multiple');
+
+        if (multipleChangeTarget && multipleChangeTarget.target.id === target) {
+          const isMultiple = multipleChangeTarget.target.multiple;
+
+          if (isMultiple !== $(multipleChangeTarget.target).data('multiple')) {
+            $(multipleChangeTarget.target)
+              .data('multiple', isMultiple)
+              .select2('destroy')
+              .select2({multiple: isMultiple, tags: isMultiple});
+          }
+        }
       });
+
+      isInit = true;
     }
 
     var mo = new MutationObserver(initSelectboxAutocompleter);
