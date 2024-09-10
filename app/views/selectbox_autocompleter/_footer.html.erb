@@ -18,7 +18,7 @@
 
         if (!$selectbox.length || exceptionsList.includes($selectbox.attr('id'))) return;
 
-        const hasSearchField = isAutosearchSetting && $selectbox.find('option').length > 10 ? 0 : -1;
+        const hasSearchField = isAutosearchSetting && $selectbox.find('option').length > 7 ? 0 : -1;
 
         if (!$selectbox.hasClass('select2-hidden-accessible') && $selectbox.is(':visible')) {
           const isMultiple = !!$selectbox.attr('multiple');
