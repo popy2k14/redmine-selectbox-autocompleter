@@ -1,0 +1,8 @@
+ru:
+  label_target_list: "Список целей"
+  label_autocomplete_type: "Тип автозаполнения"
+  label_autocomplete_type_select2: "конвертировать Select2"
+  label_autocomplete_type_datalist: "вставить текстовое поле с datalist"
+  label_autocomplete_type_jquery: "вставить текстовое поле с jQuery"
+  label_exceptions_list: "Список исключений"
+  label_autocomplete_search_more_ten: "Автоматически включить поиск для всех селектов с количеством пунктов более 10"

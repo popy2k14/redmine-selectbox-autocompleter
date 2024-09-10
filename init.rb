@@ -11,13 +11,13 @@ Redmine::Plugin.register :selectbox_autocompleter do
 
   settings(:default => {
     'target_list' => [
-       'issue_assigned_to_id',
-       'values_assigned_to_id_1',
-       'values_author_id_1',
-       'wiki_page_parent_id',
-       'project_quick_jump_box'
+       'query_form_content',
+       'issue-form',
+       'kanban_form',
      ].join("\r\n"),
+     'exceptions_list' => [].join("\r\n"),
      'autocomplete_type' => 'select2',
+     'autocomplete_autosearch' => true,
   }, :partial => 'selectbox_autocompleter/settings')
 
   unless ApplicationHelper.included_modules.include?(SelectboxAutocompleter::Patches::ApplicationHelperPatch)
