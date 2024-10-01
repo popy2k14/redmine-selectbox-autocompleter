@@ -17,7 +17,9 @@
     });
   }
 
-  function handleMatchParams(params, data, locale = 'ru') {
+  function handleMatchParams(params, data) {
+    const current_locale = '<%= locale.to_s %>';
+
     if (!params.term || $.trim(params.term) === '') {
       return data;
     }
@@ -29,7 +31,7 @@
     if (data.children?.length) {
       const children = data.children.filter(({text}) => {
         return text.toLowerCase().includes(params.term.toLowerCase())
-          || (locale === 'ru' && text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())));
+          || (current_locale === 'ru' && text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())));
       });
 
       return children?.length ? {...data, children} : null;
@@ -37,7 +39,7 @@
 
     if (
       data.text.toLowerCase().includes(params.term.toLowerCase())
-      || (locale === 'ru' && data.text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())))
+      || (current_locale === 'ru' && data.text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())))
     ) {
       return data;
     }
@@ -47,7 +49,6 @@
 
   (function(){
     let isInit = false;
-    const locale = '<%= locale.to_s %>';
     const targetsList = <%= raw generate_target_list_for_js %>;
     const exceptionsList = <%= raw generate_exceptions_list_for_js %>;
     const isAutosearchSetting = <%= raw is_autosearch %>;
