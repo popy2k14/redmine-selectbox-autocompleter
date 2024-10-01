@@ -3,10 +3,52 @@
   if type == 'select2'
 %>
 <script type="text/javascript">
+  function autoKeyboard(str) {
+    replacer = {
+        "q":"й", "w":"ц", "e":"у", "r":"к", "t":"е", "y":"н", "u":"г",
+        "i":"ш", "o":"щ", "p":"з", "[":"х", "]":"ъ", "a":"ф", "s":"ы",
+        "d":"в", "f":"а", "g":"п", "h":"р", "j":"о", "k":"л", "l":"д",
+        ";":"ж", "'":"э", "z":"я", "x":"ч", "c":"с", "v":"м", "b":"и",
+        "n":"т", "m":"ь", ",":"б", ".":"ю", "/":"."
+    };     
+
+    return str.replace(/[A-z/,.;\'\]\[]/g, function ( x ){
+        return x == x.toLowerCase() ? replacer[ x ] : replacer[ x.toLowerCase() ].toUpperCase();
+    });
+  }
+
+  function handleMatchParams(params, data, locale = 'ru') {
+    if (!params.term || $.trim(params.term) === '') {
+      return data;
+    }
+
+    if (typeof data.text === 'undefined') {
+      return null;
+    }
+
+    if (data.children?.length) {
+      const children = data.children.filter(({text}) => {
+        return text.toLowerCase().includes(params.term.toLowerCase())
+          || (locale === 'ru' && text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())));
+      });
+
+      return children?.length ? {...data, children} : null;
+    }
+
+    if (
+      data.text.toLowerCase().includes(params.term.toLowerCase())
+      || (locale === 'ru' && data.text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())))
+    ) {
+      return data;
+    }
+
+    return null;
+  }
+
   (function(){
-    // select autocomplete plugin init
     let isInit = false;
-    const targetsList = <%= raw generate_target_list_for_js %>.map((target) => `#${target}`);
+    const locale = '<%= locale.to_s %>';
+    const targetsList = <%= raw generate_target_list_for_js %>;
     const exceptionsList = <%= raw generate_exceptions_list_for_js %>;
     const isAutosearchSetting = <%= raw is_autosearch %>;
 
@@ -30,6 +72,7 @@
               multiple: isMultiple,
               tags: isMultiple,
               minimumResultsForSearch: hasSearchField,
+              matcher: handleMatchParams,
             });
         }
 
@@ -48,6 +91,7 @@
                 multiple: isMultiple,
                 tags: isMultiple,
                 minimumResultsForSearch: hasSearchField,
+                matcher: handleMatchParams,
               });
           }
         }
@@ -68,8 +112,6 @@
 %>
 <script type="text/javascript">
   (function(){
-    // select autocomplete plugin init
-
     function initSelectboxAutocompleter() {
       <%= raw generate_target_list_for_js %>.forEach(function(target) {selectboxAutocompleter.generateSelectboxAutocompleter(target, '<%= type %>')});
     }

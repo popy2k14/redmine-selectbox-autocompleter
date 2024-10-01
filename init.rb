@@ -11,9 +11,9 @@ Redmine::Plugin.register :selectbox_autocompleter do
 
   settings(:default => {
     'target_list' => [
-       'query_form_content',
-       'issue-form',
-       'kanban_form',
+        '#query_form_content',
+        '#issue-form',
+        '#kanban_form',
      ].join("\r\n"),
      'exceptions_list' => [].join("\r\n"),
      'autocomplete_type' => 'select2',
