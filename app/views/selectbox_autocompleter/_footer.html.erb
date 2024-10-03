@@ -3,34 +3,97 @@
   if type == 'select2'
 %>
 <script type="text/javascript">
+  function autoKeyboard(str) {
+    replacer = {
+        "q":"й", "w":"ц", "e":"у", "r":"к", "t":"е", "y":"н", "u":"г",
+        "i":"ш", "o":"щ", "p":"з", "[":"х", "]":"ъ", "a":"ф", "s":"ы",
+        "d":"в", "f":"а", "g":"п", "h":"р", "j":"о", "k":"л", "l":"д",
+        ";":"ж", "'":"э", "z":"я", "x":"ч", "c":"с", "v":"м", "b":"и",
+        "n":"т", "m":"ь", ",":"б", ".":"ю", "/":"."
+    };     
+
+    return str.replace(/[A-z/,.;\'\]\[]/g, function ( x ){
+        return x == x.toLowerCase() ? replacer[ x ] : replacer[ x.toLowerCase() ].toUpperCase();
+    });
+  }
+
+  function handleMatchParams(params, data) {
+    const current_locale = '<%= locale.to_s %>';
+
+    if (!params.term || $.trim(params.term) === '') {
+      return data;
+    }
+
+    if (typeof data.text === 'undefined') {
+      return null;
+    }
+
+    if (data.children?.length) {
+      const children = data.children.filter(({text}) => {
+        return text.toLowerCase().includes(params.term.toLowerCase())
+          || (current_locale === 'ru' && text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())));
+      });
+
+      return children?.length ? {...data, children} : null;
+    }
+
+    if (
+      data.text.toLowerCase().includes(params.term.toLowerCase())
+      || (current_locale === 'ru' && data.text.toLowerCase().includes(autoKeyboard(params.term.toLowerCase())))
+    ) {
+      return data;
+    }
+
+    return null;
+  }
+
   (function(){
-    // select autocomplete plugin init
-    var isInit = false;
+    let isInit = false;
+    const targetsList = <%= raw generate_target_list_for_js %>;
+    const exceptionsList = <%= raw generate_exceptions_list_for_js %>;
+    const isAutosearchSetting = <%= raw is_autosearch %>;
 
     function initSelectboxAutocompleter(mutationRecord) {
-      <%= raw generate_target_list_for_js %>.forEach(function (target) {
-        var $selectbox = $('#' + target);
+      if (!targetsList.length) return;
+
+      $(targetsList.join()).find('select').each(function (_, target) {
+        const $selectbox = $(target);
+
+        if (!$selectbox.length || exceptionsList.includes($selectbox.attr('id'))) return;
+
+        const hasSearchField = isAutosearchSetting && $selectbox.find('option').length > 7 ? 0 : -1;
 
         if (!$selectbox.hasClass('select2-hidden-accessible') && $selectbox.is(':visible')) {
           const isMultiple = !!$selectbox.attr('multiple');
+
           $selectbox
             .addClass('select-autocomplete')
             .attr('data-multiple', isMultiple)
-            .select2({multiple: isMultiple, tags: isMultiple});
+            .select2({
+              multiple: isMultiple,
+              tags: isMultiple,
+              minimumResultsForSearch: hasSearchField,
+              matcher: handleMatchParams,
+            });
         }
 
         if (!isInit) return;
 
         const multipleChangeTarget = mutationRecord.find((record) => record.type === 'attributes' && record.attributeName === 'multiple');
 
-        if (multipleChangeTarget && multipleChangeTarget.target.id === target) {
+        if (multipleChangeTarget && multipleChangeTarget.target.id === $selectbox.attr('id')) {
           const isMultiple = multipleChangeTarget.target.multiple;
 
           if (isMultiple !== $(multipleChangeTarget.target).data('multiple')) {
             $(multipleChangeTarget.target)
               .data('multiple', isMultiple)
               .select2('destroy')
-              .select2({multiple: isMultiple, tags: isMultiple});
+              .select2({
+                multiple: isMultiple,
+                tags: isMultiple,
+                minimumResultsForSearch: hasSearchField,
+                matcher: handleMatchParams,
+              });
           }
         }
       });
@@ -38,7 +101,7 @@
       isInit = true;
     }
 
-    var mo = new MutationObserver(initSelectboxAutocompleter);
+    const mo = new MutationObserver(initSelectboxAutocompleter);
     mo.observe(document.body, { attributes: true, childList: true, subtree: true });
   })();
 </script>
@@ -50,8 +113,6 @@
 %>
 <script type="text/javascript">
   (function(){
-    // select autocomplete plugin init
-
     function initSelectboxAutocompleter() {
       <%= raw generate_target_list_for_js %>.forEach(function(target) {selectboxAutocompleter.generateSelectboxAutocompleter(target, '<%= type %>')});
     }
