@@ -1,5 +1,5 @@
 ru:
-  label_target_list: "id контейнеров в которых селекты будет заменены"
+  label_target_list: "Селекторы контейнеров в которых селекты будет заменены"
   label_autocomplete_type: "Тип автозаполнения"
   label_autocomplete_type_select2: "конвертировать Select2"
   label_autocomplete_type_datalist: "вставить текстовое поле с datalist"

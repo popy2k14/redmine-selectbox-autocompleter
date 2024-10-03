@@ -49,9 +49,11 @@
 
   (function(){
     let isInit = false;
-    const targetsList = <%= raw generate_target_list_for_js %>;
-    const exceptionsList = <%= raw generate_exceptions_list_for_js %>;
     const isAutosearchSetting = <%= raw is_autosearch %>;
+    const targetsList = <%= raw generate_target_list_for_js %>;
+    const exceptionsList = <%= raw generate_exceptions_list_for_js %>.map((item) => {
+      return item.startsWith('#') ? item.replace('#', '') : item;
+    });
 
     function initSelectboxAutocompleter(mutationRecord) {
       if (!targetsList.length) return;

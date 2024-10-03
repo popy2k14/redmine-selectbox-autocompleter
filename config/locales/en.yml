@@ -1,5 +1,5 @@
 en:
-  label_target_list: "id of containers in which selects will be replaced"
+  label_target_list: "Selectors of containers in which selects will be replaced"
   label_autocomplete_type: "Autocomplete Type"
   label_autocomplete_type_select2: "convert Select2"
   label_autocomplete_type_datalist: "insert Textbox with datalist"
