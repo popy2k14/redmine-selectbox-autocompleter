@@ -30,3 +30,7 @@
 #issue_assigned_to_id_autocomplete {
   width: 30%;
 }
+
+*[title=" "], *[title=" "], *[title="&nbsp;"]{
+  pointer-events: none;
+}
