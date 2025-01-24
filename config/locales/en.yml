@@ -6,3 +6,6 @@ en:
   label_autocomplete_type_jquery: "insert Textbox with jQuery"
   label_exceptions_list: "id select which will be skipped"
   label_autocomplete_search_more_ten: "Add search field if there are more than 7 items and the parent container id matches"
+  label_ux_next_settings: "Theme settings"
+  theme_settings_title: "Choose the theme"
+  search_placeholder: "Search..."

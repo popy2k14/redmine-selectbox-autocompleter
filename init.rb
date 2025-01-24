@@ -3,15 +3,14 @@ require_relative 'lib/selectbox_autocompleter/patches/application_helper_patch'
 
 Redmine::Plugin.register :selectbox_autocompleter do
   name 'Selectbox Autocompleter plugin'
-  author 'heriet'
+  author 'rk team'
   description 'This plugin generate Autocomplete box for Select box'
-  version '1.3.0'
-  url 'https://github.com/heriet/redmine-selectbox-autocompleter'
-  author_url 'http://heriet.info'
+  version '1.4.0'
+  url 'https://github.com/rkteam/redmine-selectbox-autocompleter'
+  author_url 'https://github.com/rkteam'
 
   settings(:default => {
     'target_list' => [
-        '#query_form_content',
         '#issue-form',
         '#kanban_form',
      ].join("\r\n"),

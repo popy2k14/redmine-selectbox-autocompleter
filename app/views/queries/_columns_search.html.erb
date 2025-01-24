@@ -1,0 +1,49 @@
+<style>
+  .available_columns_search::placeholder {
+    color: var(--text-color);
+  }
+  #available_c{
+    width: 100%;
+    border-top: 0;
+    padding: 0;
+  }
+  #selected_c{
+    width: 100%;
+    border-top: 0;
+    padding: 0;
+  }
+  body #wrapper .available_columns_search {
+    width: 100%;
+    min-width: 20px;
+    border: 1px solid #ccc;
+    margin: 0;
+    color: var(--color-text)
+  }
+</style>
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    $('.query-columns select').each(function(index) {
+      var $select = $(this);
+      var searchId = 'available_columns_search_' + index;
+      var searchHTML = '<span style="display: flex; width: 100%;">' +
+                       '<input type="text" id="' + searchId + '" class="available_columns_search" placeholder="<%= I18n.t('search_placeholder') %>"/>' +
+                       '</span>';
+
+      $select.before(searchHTML);
+
+      $('#' + searchId).on('input', function() {
+        var searchValue = $(this).val().toLowerCase();
+        $select.find('option').each(function() {
+          var text = $(this).text().toLowerCase();
+          $(this).toggle(text.includes(searchValue));
+        });
+      });
+    });
+
+    $('.query-columns').closest('form').submit(function() {
+      $('.query-columns select').each(function() {
+        $(this).find('option:not(:disabled)').prop('selected', true);
+      });
+    });
+  });
+<% end %>
