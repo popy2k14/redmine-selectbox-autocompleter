@@ -4,7 +4,5 @@ fr:
   label_autocomplete_type_select2: "Conversion Select2"
   label_autocomplete_type_datalist: "Insertion Textbox avec datalist"
   label_autocomplete_type_jquery: "Insertion Textbox avec jQuery"
-  label_ux_next_settings: "Paramètres du thème"
-  theme_settings_title: "Choisir le thème"
   search_placeholder: "Rechercher..."
 
