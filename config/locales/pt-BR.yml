@@ -5,3 +5,4 @@ pt-BR:
   label_autocomplete_type_datalist: "inserir textbox de pesquisa"
   label_autocomplete_type_jquery: "inserir textbox de jQuery"
   search_placeholder: "Search..."
+  no_data_list_found: "Not found"

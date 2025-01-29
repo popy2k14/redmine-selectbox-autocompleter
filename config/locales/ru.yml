@@ -7,3 +7,4 @@ ru:
   label_exceptions_list: "id select которые будут пропущены"
   label_autocomplete_search_more_ten: "Добавить поле поиск если пунктов больше 7 и id родительского контейнера совпадает"
   search_placeholder: "Поиск..."
+  no_data_list_found: "Результат не найден"

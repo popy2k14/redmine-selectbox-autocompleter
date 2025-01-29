@@ -5,4 +5,4 @@ fr:
   label_autocomplete_type_datalist: "Insertion Textbox avec datalist"
   label_autocomplete_type_jquery: "Insertion Textbox avec jQuery"
   search_placeholder: "Rechercher..."
-
+  no_data_list_found: "Non trouvé"

@@ -5,3 +5,4 @@ zh:
   label_autocomplete_type_datalist: "插入含数据列的文本框"
   label_autocomplete_type_jquery: "插入带有jQuery的文本框"
   search_placeholder: "Search..."
+  no_data_list_found: "Not found"
