@@ -27,7 +27,7 @@
       var searchId = 'available_columns_search_' + index;
       var clearId = 'clear_search_' + index;
       var searchHTML = '<span style="display: flex; width: 100%; position: relative;">' +
-                       '<input type="text" id="' + searchId + '" class="available_columns_search" placeholder="<%= I18n.t('search_placeholder') %>"/>' +
+                       '<input type="text" id="' + searchId + '" class="available_columns_search" placeholder="<%= I18n.t('label_search') %>"/>' +
                        '<span id="' + clearId + '" style="position: absolute; right: 10px; top: 40%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 20px">×</span>' +
                        '</span>';
 
@@ -35,7 +35,7 @@
 
       var $input = $('#' + searchId);
       var $clearBtn = $('#' + clearId);
-      var noDataText = "<%= I18n.t('no_data_list_found') %>";
+      var noDataText = "<%= I18n.t('label_no_data') %>";
 
       $input.on('input', function() {
         var searchValue = $(this).val()
