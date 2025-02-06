@@ -1,0 +1,79 @@
+<style>
+  .available_columns_search::placeholder {
+    color: var(--text-color);
+  }
+  #available_c{
+    width: 100%;
+    border-top: 0;
+    padding: 0;
+  }
+  #selected_c{
+    width: 100%;
+    border-top: 0;
+    padding: 0;
+  }
+  body #wrapper .available_columns_search {
+    width: 100%;
+    min-width: 20px;
+    border: 1px solid #ccc;
+    margin: 0;
+    color: var(--color-text)
+  }
+</style>
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    $('.query-columns select').each(function(index) {
+      var $select = $(this);
+      var searchId = 'available_columns_search_' + index;
+      var clearId = 'clear_search_' + index;
+      var searchHTML = '<span style="display: flex; width: 100%; position: relative;">' +
+                       '<input type="text" id="' + searchId + '" class="available_columns_search" placeholder="<%= I18n.t('label_search') %>"/>' +
+                       '<span id="' + clearId + '" style="position: absolute; right: 10px; top: 40%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 20px">×</span>' +
+                       '</span>';
+
+      $select.before(searchHTML);
+
+      var $input = $('#' + searchId);
+      var $clearBtn = $('#' + clearId);
+      var noDataText = "<%= I18n.t('label_no_data') %>";
+
+      $input.on('input', function() {
+        var searchValue = $(this).val()
+          .replace(/^\s+/, '')
+          .replace(/\s{2,}/g, ' ')
+          .toLowerCase();
+        $(this).val(searchValue);
+
+        $clearBtn.toggle(searchValue.length !== 0);
+
+        var hasVisibleItems = false;
+        $select.find('option').each(function() {
+          var text = $(this).text().toLowerCase();
+          $(this).toggle(text.includes(searchValue));
+          var isVisible = text.includes(searchValue);
+          $(this).toggle(isVisible);
+          if (isVisible) {
+            hasVisibleItems = true;
+          }
+        });
+
+        $select.find('option.no-data').remove();
+
+        if (!hasVisibleItems) {
+          $select.append('<option class="no-data" disabled>' + noDataText + '</option>');
+        }
+
+      });
+
+      $clearBtn.on('click', function() {
+        $input.val('').trigger('input');
+      });
+    });
+
+    $('.query-columns').closest('form').submit(function() {
+      $('.query-columns select').each(function() {
+        $(this).find('option:not(:disabled)').prop('selected', true);
+      });
+    });
+  });
+<% end %>
