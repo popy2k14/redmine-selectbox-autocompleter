@@ -49,3 +49,25 @@ Insert input box with jQuery.
 This is useful for IE and Edge because jQuery list is a partial match; the list by the autocomplete attribute is a forward match in IE and Edge.
 
 ![ss_jump_jquery](/docs/ss_jump_jquery.png?raw=true)
+
+### Theming
+To add theming add this at the top of your public/themes/[theme-name]/stylesheets/application.css:
+
+```
+@import url(../../../plugin_assets/selectbox_autocompleter/stylesheets/selectbox_autocompleter.css);    
+```
+
+Edit the plugin theming file public/plugin_assets/selectbox_autocompleter/stylesheets/selectbox_autocompleter.css to your liking.
+Ex. add:
+
+```
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 21px !important;
+  font-size: 14px !important;
+}    
+    
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #1867D2 !important;
+  color: #FFFFFF !important;
+}  
+
